@@ -1,0 +1,24 @@
+# Python
+__pycache__/
+*.py[cod]
+*.egg-info/
+.venv/
+venv/
+
+# Data (large raw files — not needed at runtime)
+data/raw/
+data/processed/
+
+# Training artifacts (not needed in API image)
+wandb/
+models/checkpoints/
+models/tokenizer/
+
+# Dev/CI
+.env
+.git/
+.gitignore
+notebooks/
+
+# Keep: models/final/ — these ARE needed (the weights)
+# Keep: src/ api/ configs/

@@ -1,0 +1,10 @@
+# Inference + API only — no training/tracking deps
+torch>=2.1.0
+transformers>=4.36.0
+tokenizers>=0.15.0
+
+fastapi>=0.109.0
+uvicorn[standard]>=0.25.0
+python-multipart>=0.0.6
+pydantic>=2.5.0
+python-dotenv>=1.0.0

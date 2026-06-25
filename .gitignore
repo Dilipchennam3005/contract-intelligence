@@ -1,0 +1,48 @@
+# Environment
+.env
+.venv/
+venv/
+env/
+
+# Python
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+.Python
+*.egg-info/
+dist/
+build/
+
+# Data (large files)
+data/raw/*.json
+data/raw/*.csv
+data/raw/*.zip
+data/processed/
+
+# Models (large binaries)
+models/checkpoints/
+models/final/
+*.bin
+*.safetensors
+*.pt
+*.pth
+
+# Notebooks checkpoints
+.ipynb_checkpoints/
+
+# W&B
+wandb/
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Docker
+docker/*.tar

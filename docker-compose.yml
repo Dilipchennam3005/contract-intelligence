@@ -1,0 +1,19 @@
+services:
+  api:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: contract-intelligence:latest
+    container_name: contract-api
+    ports:
+      - "8000:8000"
+    environment:
+      - MODEL_DIR=/app/models/final/step4-finetune-quick-cpu
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "python", "-c",
+             "import urllib.request; urllib.request.urlopen('http://localhost:8000/health')"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 60s
