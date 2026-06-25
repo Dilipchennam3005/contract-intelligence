@@ -40,11 +40,13 @@ DEVICE     = "cuda" if torch.cuda.is_available() else "cpu"
 def parse_args():
     p = argparse.ArgumentParser()
     p.add_argument("--quick", action="store_true",
-                   help="300 train / 60 eval samples, 3 epochs — CPU-friendly (~25 min)")
-    p.add_argument("--train_samples", type=int, default=None, help="Override sample count")
+                   help="50 train samples, 3 epochs — CPU demo only")
+    p.add_argument("--train_samples", type=int, default=None)
     p.add_argument("--eval_samples",  type=int, default=None)
     p.add_argument("--epochs",        type=int, default=None)
     p.add_argument("--batch_size",    type=int, default=None)
+    p.add_argument("--max_windows",   type=int, default=None,
+                   help="Cap windows per sample (None = all). Set 15 on Colab to finish in ~2 hrs.")
     p.add_argument("--run_name",      type=str, default=None)
     return p.parse_args()
 
@@ -130,6 +132,10 @@ def main():
         max_windows          = None   # use all windows for full GPU training
         fp16                 = True
         run_label            = "full-gpu"
+
+    # CLI override takes priority over mode defaults
+    if args.max_windows is not None:
+        max_windows = args.max_windows
 
     run_name = args.run_name or f"step4-finetune-{run_label}"
 
