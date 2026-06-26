@@ -48,6 +48,8 @@ def parse_args():
     p.add_argument("--max_windows",   type=int, default=None,
                    help="Cap windows per sample (None = all). Set 15 on Colab to finish in ~2 hrs.")
     p.add_argument("--run_name",      type=str, default=None)
+    p.add_argument("--resume",        action="store_true",
+                   help="Resume from latest checkpoint in models/checkpoints/<run_name>")
     return p.parse_args()
 
 
@@ -229,11 +231,20 @@ def main():
     )
 
     # ── train ─────────────────────────────────────────────────────────────────
+    checkpoint_dir = MODEL_DIR / "checkpoints" / run_name
+    resume_from = None
+    if args.resume and checkpoint_dir.exists():
+        checkpoints = sorted(checkpoint_dir.glob("checkpoint-*"),
+                             key=lambda p: int(p.name.split("-")[-1]))
+        if checkpoints:
+            resume_from = str(checkpoints[-1])
+            print(f"\nResuming from checkpoint: {resume_from}")
+
     print(f"\nStarting fine-tuning (run: {run_name})...")
     print(f"  Steps per epoch : {len(train_ds) // (batch_size * grad_accum)}")
     print(f"  Total steps     : {len(train_ds) // (batch_size * grad_accum) * num_epochs}")
 
-    train_result = trainer.train()
+    train_result = trainer.train(resume_from_checkpoint=resume_from)
     trainer.log_metrics("train", train_result.metrics)
 
     # ── save best model ───────────────────────────────────────────────────────
